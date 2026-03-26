@@ -12,8 +12,7 @@ import {
   InputAdornment,
   MenuItem,
   AppBar,
-  Toolbar,
-  IconButton
+  Toolbar
 } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
 import EmailIcon from '@mui/icons-material/Email';
@@ -21,7 +20,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import CategoryIcon from '@mui/icons-material/Category';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import axios from 'axios';
+import API from '../api';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -61,12 +60,8 @@ export default function SuperAdminDashboard() {
     setStatus({ type: 'info', msg: 'Provisioning new business environment...' });
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.post(
-        'http://localhost:3000/api/auth/register-business',
-        formData,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      // Using the API instance handles the Authorization header automatically
+      await API.post('/api/auth/register-business', formData);
 
       setStatus({
         type: 'success',
@@ -95,7 +90,7 @@ export default function SuperAdminDashboard() {
         <Toolbar>
           <AdminPanelSettingsIcon sx={{ mr: 2 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold' }}>
-           Cloud Administration
+            Cloud Administration
           </Typography>
           <Typography variant="body2" sx={{ mr: 3, opacity: 0.8 }}>
             Logged in as: {user?.email}

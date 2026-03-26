@@ -12,7 +12,7 @@ import {
   Avatar
 } from '@mui/material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import axios from 'axios';
+import API from '../api';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
@@ -30,8 +30,8 @@ const SuperAdminLogin = () => {
     setError('');
     
     try {
-      // Note: This endpoint should be your specific superadmin route on the backend
-      const res = await axios.post('http://localhost:3000/api/auth/superadmin/login', { email, password });
+      // Using the API instance for the superadmin specific route
+      const res = await API.post('/api/auth/superadmin/login', { email, password });
       
       // Store the superadmin user and token
       login(res.data.user, res.data.token);

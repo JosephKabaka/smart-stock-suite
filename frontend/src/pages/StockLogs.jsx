@@ -14,23 +14,18 @@ import {
   Divider
 } from '@mui/material';
 import HistoryIcon from '@mui/icons-material/History';
-import axios from 'axios';
+import API from '../api';
 
 export default function StockLogsPage() {
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Helper for Authorization Header
-  const getAuthHeader = () => ({
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  });
-
   // 1. FETCH LOGS FROM BACKEND
   const fetchLogs = async () => {
     try {
       setLoading(true);
-      // Updated URL to match the multi-tenant API structure
-      const response = await axios.get('http://localhost:3000/api/transactions/logs', getAuthHeader());
+      // Updated to use the API instance (automatically includes Auth header)
+      const response = await API.get('/api/transactions/logs');
       
       setLogs(response.data);
     } catch (error) {

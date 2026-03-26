@@ -17,7 +17,7 @@ import {
   Divider
 } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import axios from 'axios';
+import API from '../api';
 
 export default function EmployeesPage() {
   // 1. STATES
@@ -29,16 +29,11 @@ export default function EmployeesPage() {
   const [formStatus, setFormStatus] = useState({ type: '', msg: '' });
   const [tableStatus, setTableStatus] = useState({ type: '', msg: '' });
 
-  // Helper for Authorization Header
-  const getAuthHeader = () => ({
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  });
-
   // 2. FETCH DATA
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/employees/performance', getAuthHeader());
+      const response = await API.get('/api/employees/performance');
       setEmployees(response.data);
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -59,7 +54,7 @@ export default function EmployeesPage() {
     e.preventDefault();
     try {
       setFormStatus({ type: 'info', msg: 'Registering...' });
-      await axios.post('http://localhost:3000/api/employees/add', newEmployee, getAuthHeader());
+      await API.post('/api/employees/add', newEmployee);
       
       setNewEmployee({ name: '', phone: '' });
       setFormStatus({ type: 'success', msg: 'Employee registered successfully!' });
@@ -81,9 +76,9 @@ export default function EmployeesPage() {
   // 4. TOGGLE STATUS HANDLER
   const handleToggleStatus = async (id, currentIsActive) => {
     try {
-      await axios.patch(`http://localhost:3000/api/employees/toggle/${id}`, {
+      await API.patch(`/api/employees/toggle/${id}`, {
         is_active: !currentIsActive
-      }, getAuthHeader());
+      });
       setTableStatus({ type: 'success', msg: 'Status updated successfully!' });
       fetchEmployees();
       setTimeout(() => setTableStatus({ type: '', msg: '' }), 3000);

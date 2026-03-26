@@ -16,7 +16,7 @@ import {
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';      // Added icon
 import VisibilityOff from '@mui/icons-material/VisibilityOff'; // Added icon
-import axios from 'axios';
+import API from '../api';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ const Login = () => {
     setError('');
     
     try {
-      const res = await axios.post('http://localhost:3000/api/auth/login', { email, password });
+      const res = await API.post('/api/auth/login', { email, password });
       login(res.data.user, res.data.token);
       navigate('/dashboard'); 
     } catch (err) {

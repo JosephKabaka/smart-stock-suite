@@ -14,12 +14,11 @@ import {
   MenuItem
 } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
-import CategoryIcon from '@mui/icons-material/Category';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import SaveIcon from '@mui/icons-material/Save';
-import axios from 'axios';
+import API from '../api';
 import { AuthContext } from '../context/AuthContext';
 
 export default function Settings() {
@@ -57,11 +56,7 @@ export default function Settings() {
     setStatus({ type: '', msg: '' });
 
     try {
-      const token = localStorage.getItem('token');
-      await axios.put('http://localhost:3000/api/business/update-profile', 
-        { businessName, productType },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await API.put('/api/business/update-profile', { businessName, productType });
      
       // CRITICAL: This updates the Sidebar and AuthContext state instantly
       updateUser({ businessName, productType });
@@ -84,12 +79,11 @@ export default function Settings() {
 
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       // Matches the endpoint in your controller (changePassword)
-      await axios.put('http://localhost:3000/api/auth/changePassword', 
-        { currentPassword: passwords.currentPassword, newPassword: passwords.newPassword },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      await API.put('/api/auth/changePassword', { 
+        currentPassword: passwords.currentPassword, 
+        newPassword: passwords.newPassword 
+      });
 
       setStatus({ type: 'success', msg: 'Password changed successfully!' });
       // Clear the fields for security

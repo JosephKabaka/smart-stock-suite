@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Grid, Box, Paper, TextField, MenuItem, Button, Alert, CircularProgress } from '@mui/material';
-import axios from 'axios';
+import API from '../api'; 
 import StatCard from '../components/StatCard';
 
 export default function Dashboard() {
@@ -17,16 +17,11 @@ export default function Dashboard() {
   //State for worker return form 
   const [returnForm, setReturnForm] = useState({ employeeId: '', boxesReturned: '', amountCollected: '' });
 
-  // Helper for Authorization Header
-  const getAuthHeader = () => ({
-    headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
-  });
-
   // 3. Fetch Data on Page Load
   const fetchDashboardData = async () => {
     try {
       // Updated link to match new multi-tenant route
-      const response = await axios.get('http://localhost:3000/api/inventory', getAuthHeader());
+      const response = await API.get('/api/inventory');
 
       const { stats, employees } = response.data;
 
@@ -59,7 +54,7 @@ export default function Dashboard() {
 
     try {
       // Updated link
-      await axios.post('http://localhost:3000/api/transactions/dispatch', formData, getAuthHeader());
+      await API.post('/api/transactions/dispatch', formData);
       
       setStatus({ type: 'success', msg: 'Dispatch successful!', context: 'dispatch' });
       setFormData({ employeeId: '', boxes: '' });
@@ -100,7 +95,7 @@ export default function Dashboard() {
     setStatus({ type: 'info', msg: 'Updating warehouse stock...', context: 'production' });
     try {
       // Updated link
-      await axios.post('http://localhost:3000/api/inventory/add', { boxes: prodBoxes }, getAuthHeader());
+      await API.post('/api/inventory/add', { boxes: prodBoxes });
       setProdBoxes('');
       setStatus({ type: 'success', msg: 'Stock updated!', context: 'production' });
 
@@ -139,7 +134,7 @@ export default function Dashboard() {
 
     try {
       // Updated link
-      await axios.post('http://localhost:3000/api/transactions/return', returnForm, getAuthHeader());
+      await API.post('/api/transactions/return', returnForm);
       setReturnForm({ employeeId: '', boxesReturned: '', amountCollected: '' }); // Reset
       setStatus({ type: 'success', msg: 'Worker settled and stock updated!', context: 'return' });
 
