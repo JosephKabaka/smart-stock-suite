@@ -73,6 +73,11 @@ export default function Settings() {
     e.preventDefault();
     setStatus({ type: '', msg: '' });
 
+    // CHECK ROLE: Only 'manager' is allowed to change passwords
+    if (user?.role !== 'manager') {
+      return setStatus({ type: 'error', msg: 'Access denied. Only the manager can change the password.' });
+    }
+
     if (passwords.newPassword !== passwords.confirmPassword) {
       return setStatus({ type: 'error', msg: 'New passwords do not match.' });
     }
@@ -174,6 +179,7 @@ export default function Settings() {
                     value={passwords.currentPassword}
                     onChange={(e) => setPasswords({...passwords, currentPassword: e.target.value})}
                     required
+                    disabled={user?.role !== 'manager'}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -184,6 +190,7 @@ export default function Settings() {
                     value={passwords.newPassword}
                     onChange={(e) => setPasswords({...passwords, newPassword: e.target.value})}
                     required
+                    disabled={user?.role !== 'manager'}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -194,6 +201,7 @@ export default function Settings() {
                     value={passwords.confirmPassword}
                     onChange={(e) => setPasswords({...passwords, confirmPassword: e.target.value})}
                     required
+                    disabled={user?.role !== 'manager'}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -210,7 +218,7 @@ export default function Settings() {
                     variant="contained" 
                     color="secondary" 
                     type="submit" 
-                    disabled={loading}
+                    disabled={loading || user?.role !== 'manager'}
                     sx={{ fontWeight: 'bold' }}
                   >
                     {loading ? 'Processing...' : 'Change Password'}
