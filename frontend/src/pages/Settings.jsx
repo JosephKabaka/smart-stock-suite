@@ -192,7 +192,7 @@ export default function Settings() {
                     value={passwords.newPassword}
                     onChange={(e) => setPasswords({...passwords, newPassword: e.target.value})}
                     required
-                    disabled={user?.role !== 'manager'}
+                    disabled={user?.role !== 'admin'}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -203,7 +203,7 @@ export default function Settings() {
                     value={passwords.confirmPassword}
                     onChange={(e) => setPasswords({...passwords, confirmPassword: e.target.value})}
                     required
-                    disabled={user?.role !== 'manager'}
+                    disabled={user?.role !== 'admin'}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -220,7 +220,7 @@ export default function Settings() {
                     variant="contained" 
                     color="secondary" 
                     type="submit" 
-                    disabled={loading || user?.role !== 'manager'}
+                    disabled={loading || user?.role !== 'admin'}
                     sx={{ fontWeight: 'bold' }}
                   >
                     {loading ? 'Processing...' : 'Change Password'}
