@@ -72,9 +72,11 @@ export default function Settings() {
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
     setStatus({ type: '', msg: '' });
-
+    console.log("Current User Role:", user?.role);
     // CHECK ROLE: Only 'manager' is allowed to change passwords
     if (user?.role !== 'admin') {
+     
+      
       return setStatus({ type: 'error', msg: 'Access denied. Only the manager can change the password.' });
     }
 
