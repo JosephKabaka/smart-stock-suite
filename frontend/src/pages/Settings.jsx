@@ -181,7 +181,7 @@ export default function Settings() {
                     value={passwords.currentPassword}
                     onChange={(e) => setPasswords({...passwords, currentPassword: e.target.value})}
                     required
-                    disabled={user?.role !== 'manager'}
+                    disabled={user?.role !== 'admin'}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
