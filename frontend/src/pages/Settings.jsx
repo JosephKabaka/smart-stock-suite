@@ -74,7 +74,7 @@ export default function Settings() {
     setStatus({ type: '', msg: '' });
 
     // CHECK ROLE: Only 'manager' is allowed to change passwords
-    if (user?.role !== 'manager') {
+    if (user?.role !== 'admin') {
       return setStatus({ type: 'error', msg: 'Access denied. Only the manager can change the password.' });
     }
 
